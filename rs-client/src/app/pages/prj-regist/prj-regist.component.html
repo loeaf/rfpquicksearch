@@ -1,0 +1,17 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <div style="margin-top: 20px;">
+        <h2>● 프로젝트 정보 입력</h2>
+      </div>
+      <app-prj-info-input></app-prj-info-input>
+      <button mat-button style="width: 100%" (click)="onClick()">추가</button>
+    </div>
+    <div class="col-6">
+      <div style="margin-top: 20px;">
+        <h2>● 등록된 프로젝트 정보</h2>
+      </div>
+      <app-prj-list [DisplayedColums]="'normal'"></app-prj-list>
+    </div>
+  </div>
+</div>

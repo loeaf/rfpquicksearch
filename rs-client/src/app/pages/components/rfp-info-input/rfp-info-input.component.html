@@ -1,0 +1,30 @@
+<div>
+  <form class="example-form container" #myForm=ngForm>
+    <mat-form-field class="example-full-width">
+      <mat-label>요구사항 분류</mat-label>
+      <input matInput placeholder="Ex. 기능요구사항" [(ngModel)]="rfpInfoObj.type" [ngModelOptions]="ngModuleOption">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>요구사항 고유번호</mat-label>
+      <input matInput placeholder="Ex. SFR-01" [(ngModel)]="rfpInfoObj.fullNum" [ngModelOptions]="ngModuleOption">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>요구사항 명칭</mat-label>
+      <input matInput placeholder="Ex. 보안 지침 등 준수" [(ngModel)]="rfpInfoObj.reqName" [ngModelOptions]="ngModuleOption">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>정의</mat-label>
+      <input matInput placeholder="Ex. 개발과정 상의 보안 준수" [(ngModel)]="rfpInfoObj.reqDefi" [ngModelOptions]="ngModuleOption">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>세부내용</mat-label>
+      <textarea matInput [placeholder]="textAreaStr" style="height: 100px"
+                [(ngModel)]="rfpInfoObj.detInfo" [ngModelOptions]="ngModuleOption"></textarea>
+    </mat-form-field>
+    <button mat-button (click)="openDialog()">세부내용 파싱 결과 확인</button>
+  </form>
+</div>

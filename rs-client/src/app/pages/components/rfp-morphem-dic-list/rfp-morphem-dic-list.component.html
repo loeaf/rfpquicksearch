@@ -1,0 +1,48 @@
+<div>
+  <table mat-table [dataSource]="dataSource" class="rf-morph-dic-list">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row" >
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selectItem(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="nounsFullName">
+      <th mat-header-cell *matHeaderCellDef> 품사명 </th>
+      <td mat-cell *matCellDef="let element"> {{element.nounsFullName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nounsType">
+      <th mat-header-cell *matHeaderCellDef> 품사타입 </th>
+      <td mat-cell *matCellDef="let element"> {{element.nounsType}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="combinNounsName">
+      <th mat-header-cell *matHeaderCellDef> 품사구성 </th>
+      <td mat-cell *matCellDef="let element"> {{element.combinNounsName}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="exsist">
+      <th mat-header-cell *matHeaderCellDef> 사전존재여부 </th>
+      <td mat-cell *matCellDef="let element"> {{element.exsist}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"(click)="selectItem(row)"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+</div>

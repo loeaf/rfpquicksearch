@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <div style="margin-top: 20px;">
+        <h2>● 문장으로 분석</h2>
+      </div>
+      <div>
+        <mat-form-field class="example-full-width">
+          <mat-label>분석 문장 입력</mat-label>
+          <input matInput placeholder="Ex. 분석 문장 입력" [(ngModel)]="prjInfoModel.prjName">
+        </mat-form-field>
+        <button mat-button style="width: 10%" (click)="onClick()">분석</button>
+      </div>
+      <div>
+        <h2>● 프로젝트로 분석<button mat-button style="width: 10%;float: right" (click)="onClick()">분석</button></h2>
+        <app-prj-list [DisplayedColums]="'check'"></app-prj-list>
+        <app-rfp-list [rfpListType]="'useSubDic'"></app-rfp-list>
+      </div>
+
+    </div>
+    <div class="col-6">
+      <div style="margin-top: 20px;">
+        <h2>● RFP 상세정보 입력</h2>
+      </div>
+      <app-rfp-morphem-dic-list></app-rfp-morphem-dic-list>
+    </div>
+  </div>
+</div>

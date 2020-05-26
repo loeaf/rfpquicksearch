@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div style="margin-top: 20px;">
+        <h2>● 관련 RFP 검색</h2>
+
+        <mat-form-field class="example-full-width" style="width: 30%" >
+          <mat-label>검색</mat-label>
+          <input matInput [formControl]="prjFullTextSchControl" placeholder="Ex. 기능요구사항, 공통기능, 의존성주입" [(ngModel)]="rfpSeachModel.fullText">
+          <mat-error *ngIf="prjFullTextSchControl.hasError('required')">프로젝트 명을 설정해주세요</mat-error>
+        </mat-form-field>
+
+        <button mat-button (click)="onSearch()">관련 RFP 검색</button>
+        <app-rfp-list [rfpListType]="'useSubFullTextSch'"></app-rfp-list>
+      </div>
+    </div>
+  </div>
+</div>

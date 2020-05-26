@@ -1,0 +1,67 @@
+<div>
+  <table mat-table [dataSource]="dataSource" class="rf-list">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row" >
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selectItem(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> rfp 입력 번호 </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prjId">
+      <th mat-header-cell *matHeaderCellDef> 프로젝트 입력 번호 </th>
+      <td mat-cell *matCellDef="let element"> {{element.prjId}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> 요구사항 분류 </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="fullNum">
+      <th mat-header-cell *matHeaderCellDef> 요구사항 고유번호 </th>
+      <td mat-cell *matCellDef="let element"> {{element.fullNum}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="reqDefi">
+      <th mat-header-cell *matHeaderCellDef> 요구사항 명칭 </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.reqDefi}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="reqName">
+      <th mat-header-cell *matHeaderCellDef> 정의 </th>
+      <td mat-cell *matCellDef="let element"> {{element.reqName}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="detInfo">
+      <th mat-header-cell *matHeaderCellDef> 세부 내용 </th>
+      <td mat-cell *matCellDef="let element"> {{ (element.detInfo.length>50)? (element.detInfo | slice:0:50)+'..':(element.detInfo) }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"(click)="selectItem(row)"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

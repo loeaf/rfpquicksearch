@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <div style="margin-top: 20px;">
+        <h2>● RFP 정보 입력 프로젝트 선택</h2>
+      </div>
+      <app-prj-list [DisplayedColums]="'check'"></app-prj-list>
+    </div>
+    <div class="col-6">
+      <div style="margin-top: 20px;">
+        <h2>● RFP 상세정보 입력</h2>
+      </div>
+      <app-rfp-info-input></app-rfp-info-input>
+    </div>
+    <div class="col-12">
+      <button mat-button style="width: 100%" (click)="onClick()">추가</button>
+    </div>
+    <div class="col-12">
+      <div style="margin-top: 20px;">
+        <h2>● RFP 입력 현황</h2>
+      </div>
+      <app-rfp-list [rfpListType]="'useSubPrjNum'"></app-rfp-list>
+    </div>
+  </div>
+</div>
