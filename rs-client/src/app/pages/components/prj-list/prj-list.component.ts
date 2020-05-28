@@ -40,7 +40,7 @@ export class PrjListComponent implements OnInit, OnDestroy {
     this.prjListCompoRenderEmit.unsubscribe();
   }
   /** Whether the number of selected elements matches the total number of rows. */
-  private isAllSelected() {
+  isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;

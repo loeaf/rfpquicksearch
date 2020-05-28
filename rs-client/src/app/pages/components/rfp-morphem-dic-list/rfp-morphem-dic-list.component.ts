@@ -13,12 +13,13 @@ import {ProgressService} from '../../../services/progress.service';
 })
 export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
   dataSource = new MatTableDataSource<RFPMorphemDicViewModel>();
-  displayedColumns = ['nounsFullName', 'nounsType', 'combinNounsName', 'exsist'];
+  displayedColumns = ['select', 'nounsFullName', 'nounsType', 'combinNounsName', 'exsist', 'btn'];
   private preSelection;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   selection = new SelectionModel<RFPMorphemDicViewModel>(false, []);
   rfpDicListCompoEmit;
+  modifiyCondition: boolean;
   constructor(private rfpDicManageService: RfpMorphDicService, private progressServ: ProgressService) { }
 
   ngOnDestroy(): void {
@@ -32,19 +33,36 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
         this.dataSource.paginator = this.paginator;
         return;
       }
-      const resultArr = [];
+      const resultArr2 = [];
       for (const resObj of res) {
         const nounsMorphem: RFPMorphemDicViewModel = {
           nounsFullName: resObj.nd.nounsFullName,
           nounsType: resObj.nd.nounsType,
           combinNounsName: resObj.nd.combinNounsName,
-          exsist: resObj.exsist
+          exsist: resObj.exsist,
+          hover: false,
+          modifiy: false
         };
-        resultArr.push(nounsMorphem);
+        resultArr2.push(nounsMorphem);
       }
-      this.dataSource.data = resultArr;
+      this.dataSource.data = resultArr2;
       this.dataSource.paginator = this.paginator;
     });
+    const resultArr = [];
+    for (let i = 0; i < 10; i++) {
+      const dumiData: RFPMorphemDicViewModel = {
+        nounsType: `샘플`,
+        nounsFullName: `시작`,
+        combinNounsName: `가즈아`,
+        exsist: 1,
+        id: i,
+        hover: false,
+        modifiy: false
+      }
+      resultArr.push(dumiData);
+    }
+    this.dataSource.data = resultArr;
+    this.dataSource.paginator = this.paginator;
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -80,6 +98,10 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
     this.preSelection = nowRow;
     // this.rfpManagerService.rfpListCompoRenderEmitByPrjNum.emit(nowRow.id);
   }
+
+  selectModify(id: any) {
+    this.dataSource.data.find(obj => obj.id).modifiy = true;
+  }
 }
 export interface NounsDicModel {
   nounsFullName?: string;
@@ -99,4 +121,6 @@ export interface RFPMorphemDicViewModel {
   nounsType: string;
   combinNounsName: string;
   exsist: number;
+  hover: boolean;
+  modifiy: boolean;
 }
