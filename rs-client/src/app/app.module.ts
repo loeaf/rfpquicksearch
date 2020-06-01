@@ -16,6 +16,7 @@ import {PrjInfoInputComponent} from './pages/components/prj-info-input/prj-info-
 import { RfpMorphemeModalComponent } from './pages/components/rfp-morpheme-modal/rfp-morpheme-modal.component';
 import { RfpMorphDicComponent } from './pages/rfp-morph-dic/rfp-morph-dic.component';
 import { RfpMorphemDicListComponent } from './pages/components/rfp-morphem-dic-list/rfp-morphem-dic-list.component';
+import { RfpMorphemModiModalComponent } from './pages/components/rfp-morphem-modi-modal/rfp-morphem-modi-modal.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSliderModule} from '@angular/material/slider';
@@ -29,6 +30,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {HttpConfigInterceptor} from './config/http-config-interceptor';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     PrjInfoInputComponent,
     RfpMorphemeModalComponent,
     RfpMorphDicComponent,
-    RfpMorphemDicListComponent
+    RfpMorphemDicListComponent,
+    RfpMorphemModiModalComponent
   ],
   imports: [
     BrowserModule,
@@ -63,9 +67,10 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatAutocompleteModule
   ],
-  providers: [],
+  providers: [HttpConfigInterceptor],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

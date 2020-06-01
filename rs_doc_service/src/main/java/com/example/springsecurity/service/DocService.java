@@ -164,4 +164,26 @@ public class DocService {
         }
         return resultList;
     }
+
+    public NounsDic rfpDicModify(String nounsFullName, String nounsType, String combinNounsName) {
+        var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
+        if(isNouns == null) {
+            var nounsDic = new NounsDic(nounsFullName, NounStatus.valueOf(nounsType), combinNounsName);
+            return this.docManageRepository.save(nounsDic);
+        } else {
+            isNouns.setCombinNounsName(combinNounsName);
+            isNouns.setNounsType(NounStatus.valueOf(nounsType));
+            return this.docManageRepository.save(isNouns);
+        }
+    }
+
+    public int rfpDicDelete(String nounsFullName) {
+        var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
+        if(isNouns == null) {
+            return 0;
+        } else {
+            this.docManageRepository.delete(isNouns);
+            return 1;
+        }
+    }
 }

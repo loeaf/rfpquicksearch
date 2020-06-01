@@ -5,6 +5,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {SelectionModel} from '@angular/cdk/collections';
 import {RfpMorphDicService} from '../../../services/rfp-morph-dic.service';
 import {ProgressService} from '../../../services/progress.service';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-rfp-morphem-dic-list',
@@ -15,11 +18,15 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
   dataSource = new MatTableDataSource<RFPMorphemDicViewModel>();
   displayedColumns = ['select', 'nounsFullName', 'nounsType', 'combinNounsName', 'exsist', 'btn'];
   private preSelection;
+  private preSelectionByModifiy = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   selection = new SelectionModel<RFPMorphemDicViewModel>(false, []);
   rfpDicListCompoEmit;
-  modifiyCondition: boolean;
+  options: NounsTypesStr[] = [
+    {name: 'NNG'},
+    {name: 'NNP'}
+  ];
   constructor(private rfpDicManageService: RfpMorphDicService, private progressServ: ProgressService) { }
 
   ngOnDestroy(): void {
@@ -33,36 +40,46 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
         this.dataSource.paginator = this.paginator;
         return;
       }
-      const resultArr2 = [];
+      const resultArr = [];
       for (const resObj of res) {
+        const formControlObj = new FormControl();
+        const filterOptionsObj = formControlObj.valueChanges
+            .pipe(
+              startWith(''),
+              map(value => typeof value === 'string' ? value : value.name),
+              map(name => name ? this._filter(name) : this.options.slice())
+            );
+        let nounsTypeObj = null;
+        if (resObj.nd.nounsType === null) {
+          nounsTypeObj = this.options[0].name;
+        } else {
+          nounsTypeObj = resObj.nd.nounsType;
+        }
         const nounsMorphem: RFPMorphemDicViewModel = {
+          id: resObj.nd.nounsFullName,
           nounsFullName: resObj.nd.nounsFullName,
-          nounsType: resObj.nd.nounsType,
+          nounsType: nounsTypeObj,
           combinNounsName: resObj.nd.combinNounsName,
           exsist: resObj.exsist,
           hover: false,
-          modifiy: false
+          modifiy: false,
+          nounsFormControl: formControlObj,
+          filteredOptions: filterOptionsObj
         };
-        resultArr2.push(nounsMorphem);
+        resultArr.push(nounsMorphem);
       }
-      this.dataSource.data = resultArr2;
+      this.dataSource.data = resultArr;
       this.dataSource.paginator = this.paginator;
     });
-    const resultArr = [];
-    for (let i = 0; i < 10; i++) {
-      const dumiData: RFPMorphemDicViewModel = {
-        nounsType: `샘플`,
-        nounsFullName: `시작`,
-        combinNounsName: `가즈아`,
-        exsist: 1,
-        id: i,
-        hover: false,
-        modifiy: false
-      }
-      resultArr.push(dumiData);
-    }
-    this.dataSource.data = resultArr;
-    this.dataSource.paginator = this.paginator;
+  }
+  private _filter(name: string): NounsTypesStr[] {
+    const filterValue = name.toLowerCase();
+
+    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  displayFn(nounsTypeStr: NounsTypesStr): string {
+    return nounsTypeStr && nounsTypeStr.name ? nounsTypeStr.name : '';
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -100,7 +117,33 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
   }
 
   selectModify(id: any) {
-    this.dataSource.data.find(obj => obj.id).modifiy = true;
+    const selctModi = this.dataSource.data.find(obj => obj.id === id);
+    if (selctModi.modifiy === true) { // 수정중
+      this.rfpDicManageService.putRfpMorphDic(selctModi).subscribe(obj => {
+        selctModi.modifiy = false;
+        console.log(obj);
+      });
+    } else { // 수정중아님
+      selctModi.modifiy = true;
+    }
+    const p = new MatTableDataSource<any>(this.dataSource.data)
+    this.dataSource = p;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  selectDelete(id) {
+    const selctModi = this.dataSource.data.find(obj => obj.id === id);
+    this.rfpDicManageService.delRfpMorphDic(selctModi).subscribe(obj => {
+      if ( obj === 1 ) {
+        const index = this.dataSource.data.findIndex(findObj => findObj.id === id);
+        this.dataSource.data.splice(index, 1);
+        const p = new MatTableDataSource<any>(this.dataSource.data)
+        this.dataSource = p;
+        this.dataSource.paginator = this.paginator;
+      } else {
+        alert('error');
+      }
+    });
   }
 }
 export interface NounsDicModel {
@@ -116,11 +159,17 @@ export interface RFPMorphemDicModel {
 }
 
 export interface RFPMorphemDicViewModel {
-  id?: number;
+  id?: string;
   nounsFullName?: string;
   nounsType: string;
+  nounsFormControl: FormControl;
+  filteredOptions: Observable<NounsTypesStr[]>;
   combinNounsName: string;
   exsist: number;
   hover: boolean;
   modifiy: boolean;
+}
+
+export interface NounsTypesStr {
+  name: string;
 }

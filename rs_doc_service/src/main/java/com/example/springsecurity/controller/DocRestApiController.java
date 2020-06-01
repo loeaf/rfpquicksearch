@@ -1,28 +1,44 @@
 package com.example.springsecurity.controller;
 
-        import com.example.springsecurity.model.NounsResult;
-        import com.example.springsecurity.service.DocService;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.web.bind.annotation.*;
+import com.example.springsecurity.model.NounsDic;
+import com.example.springsecurity.model.NounsResult;
+import com.example.springsecurity.service.DocService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-        import java.util.ArrayList;
-        import java.util.Collection;
-        import java.util.Collections;
-        import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 @RestController
 @RequestMapping("api/doc")
-@CrossOrigin(origins="http://localhost:4200")
 public class DocRestApiController {
-
     @Autowired
     private DocService docService;
 
-    @GetMapping("morphList/{sentence}")
+    @GetMapping("morph/{sentence}")
     public ArrayList<NounsResult> getMorphList(@PathVariable String sentence) throws Exception {
         var result = docService.analysisSentence(sentence);
         Collections.sort(result, Comparator.comparing(NounsResult::getExsist));
         return result;
+    }
+
+    @PutMapping("morph/{sentence}")
+    public NounsResult patchMorphList(
+            @RequestBody NounsDic nounsDic,
+            @PathVariable String sentence) throws Exception {
+        docService.rfpDicModify(sentence, nounsDic.getNounsType() + "", nounsDic.getCombinNounsName());
+        var nounsResult = new NounsResult();
+        var nounsDicObj = new NounsDic();
+        nounsResult.setNd(nounsDicObj);
+        nounsResult.setExsist(1);
+        return nounsResult;
+    }
+
+    @DeleteMapping("morph/{sentence}")
+    public int patchMorphList(
+            @PathVariable String sentence) throws Exception {
+        return docService.rfpDicDelete(sentence);
     }
 
     @GetMapping("test2")
