@@ -1,0 +1,11 @@
+<div>
+  <h2>○ 세부 내용 파싱 결과 확인</h2>
+</div>
+<div style="width: 500px;height: 500px">
+  <mat-nav-list>
+    <mat-list-item *ngFor="let senten of sentens">
+      <div matLine href="...">{{ senten }}</div>
+    </mat-list-item>
+  </mat-nav-list>
+</div>
+<button mat-button [mat-dialog-close]="procSentens" style="width: 100%" cdkFocusInitial>Ok</button>

@@ -6,9 +6,7 @@ import com.example.springsecurity.service.DocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/doc")
@@ -23,11 +21,20 @@ public class DocRestApiController {
         return result;
     }
 
+    // 단어가 모두다 사전에 있는지 확인, 있으면 O, 없으면 X
+    @GetMapping("combinNouns/{sentence}")
+    public List<NounsDic> getNounsListByCombinNouns(@PathVariable String sentence) throws Exception {
+        var nounsArr = new ArrayList<String>();
+        Arrays.stream(sentence.split("\\+")).forEach(p -> nounsArr.add(p));
+        System.out.println(nounsArr.toString());
+        return docService.getRfpDicNounsByList(nounsArr);
+    }
+
     @PutMapping("morph/{sentence}")
     public NounsResult patchMorphList(
             @RequestBody NounsDic nounsDic,
             @PathVariable String sentence) throws Exception {
-        docService.rfpDicModify(sentence, nounsDic.getNounsType() + "", nounsDic.getCombinNounsName());
+        docService.modifyRfpDic(sentence, nounsDic.getNounsType() + "", nounsDic.getCombinNounsName());
         var nounsResult = new NounsResult();
         var nounsDicObj = new NounsDic();
         nounsResult.setNd(nounsDicObj);
@@ -38,7 +45,7 @@ public class DocRestApiController {
     @DeleteMapping("morph/{sentence}")
     public int patchMorphList(
             @PathVariable String sentence) throws Exception {
-        return docService.rfpDicDelete(sentence);
+        return docService.deleteRfpDic(sentence);
     }
 
     @GetMapping("test2")

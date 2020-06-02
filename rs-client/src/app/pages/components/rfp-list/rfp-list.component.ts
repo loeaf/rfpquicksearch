@@ -116,6 +116,10 @@ export class RfpListComponent implements OnInit, OnDestroy {
         this.preSelection = nowRow;
         this.rfpDicManageService.getRfpMorphDic(nowRow.detInfo).subscribe(res => {
           this.rfpDicManageService.rfpDicListCompoRenderEmit.emit(res);
+        },
+        err => {
+          this.progressServ.ProgressEmmit.emit(false);
+          alert(err);
         });
         return;
       }
@@ -123,6 +127,10 @@ export class RfpListComponent implements OnInit, OnDestroy {
     this.preSelection = nowRow;
     this.rfpDicManageService.getRfpMorphDic(nowRow.detInfo).subscribe(res => {
       this.rfpDicManageService.rfpDicListCompoRenderEmit.emit(res);
+    },
+    err => {
+      this.progressServ.ProgressEmmit.emit(false);
+      alert(err);
     });
   }
 }

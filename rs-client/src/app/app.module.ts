@@ -32,6 +32,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {HttpConfigInterceptor} from './config/http-config-interceptor';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { RfpMorpCombinModalComponent } from './pages/components/rfp-morp-combin-modal/rfp-morp-combin-modal.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     RfpMorphemeModalComponent,
     RfpMorphDicComponent,
     RfpMorphemDicListComponent,
-    RfpMorphemModiModalComponent
+    RfpMorphemModiModalComponent,
+    RfpMorpCombinModalComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatSelectModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatIconModule,
+    MatSnackBarModule
   ],
   providers: [HttpConfigInterceptor],
   bootstrap: [AppComponent]

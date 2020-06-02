@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {RFPListModel} from '../rfp-list/rfp-list.component';
 import {MatPaginator} from '@angular/material/paginator';
 import {SelectionModel} from '@angular/cdk/collections';
 import {RfpMorphDicService} from '../../../services/rfp-morph-dic.service';
@@ -8,6 +7,9 @@ import {ProgressService} from '../../../services/progress.service';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {SnackBarService, SnackBarType} from '../../../services/snack-bar.service';
+import {MatDialog} from '@angular/material/dialog';
+import {RfpMorpCombinModalComponent} from '../rfp-morp-combin-modal/rfp-morp-combin-modal.component';
 
 @Component({
   selector: 'app-rfp-morphem-dic-list',
@@ -27,7 +29,9 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
     {name: 'NNG'},
     {name: 'NNP'}
   ];
-  constructor(private rfpDicManageService: RfpMorphDicService, private progressServ: ProgressService) { }
+  constructor(
+    private rfpDicManageService: RfpMorphDicService, private progressServ: ProgressService,
+    private snackBarService: SnackBarService, public dialog: MatDialog) { }
 
   ngOnDestroy(): void {
     this.rfpDicListCompoEmit.unsubscribe();
@@ -60,11 +64,14 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
           nounsFullName: resObj.nd.nounsFullName,
           nounsType: nounsTypeObj,
           combinNounsName: resObj.nd.combinNounsName,
+          combinNounsCheck: false,
+          combinNounsClick: false,
           exsist: resObj.exsist,
           hover: false,
           modifiy: false,
-          nounsFormControl: formControlObj,
-          filteredOptions: filterOptionsObj
+          nounsTypeFC: formControlObj,
+          filteredOptions: filterOptionsObj,
+          nounsCombinFC: new FormControl()
         };
         resultArr.push(nounsMorphem);
       }
@@ -135,7 +142,7 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
     const selctModi = this.dataSource.data.find(obj => obj.id === id);
     this.rfpDicManageService.delRfpMorphDic(selctModi).subscribe(obj => {
       if ( obj === 1 ) {
-        const index = this.dataSource.data.findIndex(findObj => findObj.id === id);
+        const index = this.findDataSourceByIndex(id);
         this.dataSource.data.splice(index, 1);
         const p = new MatTableDataSource<any>(this.dataSource.data)
         this.dataSource = p;
@@ -143,6 +150,29 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
       } else {
         alert('error');
       }
+    });
+  }
+  private findDataSourceByIndex(id) {
+    const index = this.dataSource.data.findIndex(findObj => findObj.id === id);
+    return index;
+  }
+
+  checkMixMorph(combinNouns: RFPMorphemDicViewModel) {
+    // checkMixMorph 전송
+    const combineNounsArr = combinNouns.combinNounsName.split(`+`);
+    this.rfpDicManageService.getRfpMorphDicByCombinNouns(combinNouns.combinNounsName)
+      .subscribe(p => {
+        if (combineNounsArr.length === p.length) {
+         this.snackBarService.alertSanckBar(SnackBarType.RFPDicFinish);
+        } else {
+          this.snackBarService.alertSanckBar(SnackBarType.RFPDicFail)
+            .onAction().subscribe(obj => {
+            const morpCombinModal = this.dialog.open(RfpMorpCombinModalComponent);
+            morpCombinModal.afterClosed().subscribe(result => {
+              console.log(`Dialog result: ${result}`);
+            });
+          });
+        }
     });
   }
 }
@@ -162,9 +192,12 @@ export interface RFPMorphemDicViewModel {
   id?: string;
   nounsFullName?: string;
   nounsType: string;
-  nounsFormControl: FormControl;
+  nounsTypeFC: FormControl;
   filteredOptions: Observable<NounsTypesStr[]>;
+  nounsCombinFC: FormControl;
   combinNounsName: string;
+  combinNounsCheck: boolean;
+  combinNounsClick: boolean;
   exsist: number;
   hover: boolean;
   modifiy: boolean;

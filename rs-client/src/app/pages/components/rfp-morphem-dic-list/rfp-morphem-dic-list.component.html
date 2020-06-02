@@ -31,7 +31,8 @@
         <ng-template #thenBlock>
           <mat-form-field class="example-full-width">
             <mat-label>품사 종류 입력</mat-label>
-            <input type="text" matInput [formControl]="element.nounsTypeControl" [matAutocomplete]="auto" [value]="element.nounsType">
+            <input type="text" matInput [formControl]="element.nounsTypeFC"
+                   [matAutocomplete]="auto" [value]="element.nounsType">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngFor="let option of element.filteredOptions | async" [value]="option">
                 {{option.name}}
@@ -46,14 +47,19 @@
     <ng-container matColumnDef="combinNounsName">
       <th mat-header-cell *matHeaderCellDef> 품사구성 </th>
       <td mat-cell *matCellDef="let element">
-        <div *ngIf="element.modifiy; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock>
-          <mat-form-field class="example-full-width">
-            <mat-label>{{element.combinNounsName}}</mat-label>
-            <input matInput [(ngModel)]="element.combinNounsName">
-          </mat-form-field>
-        </ng-template>
-        <ng-template #elseBlock>{{element.combinNounsName}}</ng-template>
+        <div>
+          <div *ngIf="element.modifiy; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock>
+            <mat-form-field class="example-full-width">
+              <mat-label>품사 구성 (ex : 품질+관리)</mat-label>
+              <input type="text" matInput [formControl]="element.nounsCombinFC" [(ngModel)]="element.combinNounsName">
+              <button mat-button *ngIf="element.combinNounsName" matSuffix mat-icon-button aria-label="Clear" (click)="checkMixMorph(element)">
+                <mat-icon>spellcheck</mat-icon>
+              </button>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #elseBlock>{{element.combinNounsName}}</ng-template>
+        </div>
       </td>
     </ng-container>
 

@@ -165,7 +165,11 @@ public class DocService {
         return resultList;
     }
 
-    public NounsDic rfpDicModify(String nounsFullName, String nounsType, String combinNounsName) {
+    public List<NounsDic> getRfpDicNounsByList(ArrayList<String> nounsData ) {
+        return this.docManageRepository.findByNounsFullNameIn(nounsData);
+    }
+
+    public NounsDic modifyRfpDic(String nounsFullName, String nounsType, String combinNounsName) {
         var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
         if(isNouns == null) {
             var nounsDic = new NounsDic(nounsFullName, NounStatus.valueOf(nounsType), combinNounsName);
@@ -177,7 +181,7 @@ public class DocService {
         }
     }
 
-    public int rfpDicDelete(String nounsFullName) {
+    public int deleteRfpDic(String nounsFullName) {
         var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
         if(isNouns == null) {
             return 0;
