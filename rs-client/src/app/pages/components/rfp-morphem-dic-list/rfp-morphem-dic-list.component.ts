@@ -78,6 +78,14 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
       this.dataSource.data = resultArr;
       this.dataSource.paginator = this.paginator;
     });
+    const morpCombinModal = this.dialog.open(RfpMorpCombinModalComponent, {
+      data: {
+        morpCombinData : '김ㄴㄴ+도현'
+      }
+    });
+    morpCombinModal.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
   private _filter(name: string): NounsTypesStr[] {
     const filterValue = name.toLowerCase();

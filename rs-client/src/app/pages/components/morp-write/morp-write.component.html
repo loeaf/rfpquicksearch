@@ -1,0 +1,13 @@
+<mat-form-field style="display: block; margin-top: 10px;">
+  <mat-label>품사명</mat-label>
+  <input matInput [(ngModel)]='nounsFullName' disabled>
+</mat-form-field>
+<mat-form-field style="display: block">
+  <mat-label>품사타입</mat-label>
+  <input matInput [(ngModel)]='nounsType'>
+</mat-form-field>
+<mat-form-field style="display: block">
+  <mat-label>품사구성</mat-label>
+  <input matInput [(ngModel)]='combinNounsName'>
+</mat-form-field>
+<button mat-button color="accent" style="width: 100%;" (click)="onSave()">저장</button>

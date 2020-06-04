@@ -1,0 +1,10 @@
+<div style="margin-top: 10px;">
+  <mat-chip-list>
+    <div *ngFor="let item of morpItems">
+      <mat-chip #matChip (click)="matChipClick(matChip.textContent)">{{item.morpCombinData}}</mat-chip>
+    </div>
+  </mat-chip-list>
+</div>
+<div>
+  <app-morp-search-list [searchItem]="clickItem"></app-morp-search-list>
+</div>

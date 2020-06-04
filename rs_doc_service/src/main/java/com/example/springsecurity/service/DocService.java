@@ -169,6 +169,10 @@ public class DocService {
         return this.docManageRepository.findByNounsFullNameIn(nounsData);
     }
 
+    public NounsDic getRfpDicNounsByNounsWord(String nounsWord ) {
+        return this.docManageRepository.findByNounsFullName(nounsWord);
+    }
+
     public NounsDic modifyRfpDic(String nounsFullName, String nounsType, String combinNounsName) {
         var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
         if(isNouns == null) {
@@ -188,6 +192,17 @@ public class DocService {
         } else {
             this.docManageRepository.delete(isNouns);
             return 1;
+        }
+    }
+
+    public NounsDic postRfpDicNounsByNouns(NounsDic nounsDic) {
+        var isNouns = this.docManageRepository.findByNounsFullName(nounsDic.getNounsFullName());
+        if(isNouns != null) {
+            return this.docManageRepository.save(nounsDic);
+        } else {
+            isNouns.setCombinNounsName(nounsDic.getCombinNounsName());
+            isNouns.setNounsType(nounsDic.getNounsType());
+            return this.docManageRepository.save(isNouns);
         }
     }
 }

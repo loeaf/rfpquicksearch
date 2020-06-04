@@ -9,18 +9,20 @@ import {RfpManagerService} from '../../../services/rfp-manager.service';
   styleUrls: ['./rfp-morp-combin-modal.component.css']
 })
 export class RfpMorpCombinModalComponent implements OnInit {
-  sentens = [];
+  morpCombins = Array<MorpCombinModalData>();
   procSentens;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private rfpManagerservie: RfpManagerService) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: MorpCombinModalData,
+    private rfpManagerservie: RfpManagerService) { }
 
   ngOnInit(): void {
-    const sentensData = this.data.sentens;
-    const porcData = sentensData.split('\n')
-      .map(obj => obj.split(' ')
-        .filter(mapData => mapData.length > 1)
-        .join(' '))
-      .filter(result => result.length > 0);
-    this.procSentens = porcData.join(' ');
-    porcData.forEach(obj => this.sentens.push(obj));
+    const sentensData = this.data.morpCombinData;
+    const porcData = sentensData.split('\+').forEach(obj => this.morpCombins.push({
+      morpCombinData: obj
+    }));
   }
+}
+
+export interface MorpCombinModalData {
+  morpCombinData: string;
 }

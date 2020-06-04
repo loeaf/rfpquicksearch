@@ -33,7 +33,6 @@ export class RfpInfoInputComponent implements OnInit, OnDestroy {
   }
   clearAllInputEmmit(): void {
     this.rfpInputClearEmmiter.subscribe((res) => {
-      debugger;
       this.rfpInfoObj = {
         type: '',
         fullNum: '',

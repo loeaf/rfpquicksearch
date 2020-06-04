@@ -3,8 +3,9 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/c
 import {RFPListModel} from '../pages/components/rfp-list/rfp-list.component';
 import {NounsDicModel, RFPMorphemDicModel} from '../pages/components/rfp-morphem-dic-list/rfp-morphem-dic-list.component';
 import { catchError } from 'rxjs/operators';
-import {throwError} from 'rxjs';
+import {Subject, throwError} from 'rxjs';
 import {ProgressService} from './progress.service';
+import {DefaultRFPMorphDicVM} from '../pages/components/morp-search-list/morp-search-list.component';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import {ProgressService} from './progress.service';
 export class RfpMorphDicService {
   constructor(private httpClient: HttpClient, private progressServ: ProgressService) { }
   @Output() rfpDicListCompoRenderEmit: EventEmitter<RFPMorphemDicModel> = new EventEmitter();
+  private MorphChipItem2ListSJ = new Subject<any>();
+  private MorpSchList2WrtieSJ = new Subject<any>();
   createUser(user) {
     return this.httpClient.post(  `http://localhost:3000/users`, user);
   }
@@ -37,6 +40,32 @@ export class RfpMorphDicService {
   }
   delRfpMorphDic(nouns: NounsDicModel) {
     return this.httpClient.delete(`http://localhost:8080/api/doc/morph/${nouns.nounsFullName}`);
+  }
+  getNounsWord(nounsWord: string) {
+    return this.httpClient
+      .get<NounsDicModel>(`http://localhost:8080/api/doc/nouns/${nounsWord}`);
+  }
+  postNouns(nouns: NounsDicModel) {
+    return this.httpClient
+      .post<NounsDicModel>(`http://localhost:8080/api/doc/nouns`, nouns);
+  }
+  sendMorphChipItem2List(chipItem: string) {
+   this.MorphChipItem2ListSJ.next(chipItem);
+  }
+  clearMorphChipItem2List(chipItem: string) {
+   this.MorphChipItem2ListSJ.next();
+  }
+  getMorphChipItem2List() {
+   return this.MorphChipItem2ListSJ.asObservable();
+  }
+  sendMorpSchList2WrtieSJ(rfpMphDic: DefaultRFPMorphDicVM) {
+    this.MorphChipItem2ListSJ.next(rfpMphDic);
+  }
+  clearMorpSchList2WrtieSJ(rfpMphDic: DefaultRFPMorphDicVM) {
+    this.MorphChipItem2ListSJ.next();
+  }
+  getMorpSchList2WrtieSJ() {
+    return this.MorphChipItem2ListSJ.asObservable();
   }
 
   erroHandler(error: HttpErrorResponse) {

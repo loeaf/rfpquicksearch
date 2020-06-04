@@ -35,6 +35,12 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { RfpMorpCombinModalComponent } from './pages/components/rfp-morp-combin-modal/rfp-morp-combin-modal.component';
+import { MorpSearchComponent } from './pages/components/morp-search/morp-search.component';
+import { MorpCombinSearchComponent } from './pages/components/morp-combin-search/morp-combin-search.component';
+import { MorpSearchListComponent } from './pages/components/morp-search-list/morp-search-list.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatChipsModule} from '@angular/material/chips';
+import { MorpWriteComponent } from './pages/components/morp-write/morp-write.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +57,11 @@ import { RfpMorpCombinModalComponent } from './pages/components/rfp-morp-combin-
     RfpMorphDicComponent,
     RfpMorphemDicListComponent,
     RfpMorphemModiModalComponent,
-    RfpMorpCombinModalComponent
+    RfpMorpCombinModalComponent,
+    MorpSearchComponent,
+    MorpCombinSearchComponent,
+    MorpSearchListComponent,
+    MorpWriteComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +84,9 @@ import { RfpMorpCombinModalComponent } from './pages/components/rfp-morp-combin-
     MatProgressBarModule,
     MatAutocompleteModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule,
+    MatChipsModule
   ],
   providers: [HttpConfigInterceptor],
   bootstrap: [AppComponent]
