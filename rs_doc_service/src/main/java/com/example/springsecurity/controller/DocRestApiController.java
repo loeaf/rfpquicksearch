@@ -8,6 +8,7 @@ import com.example.springsecurity.service.DocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -48,9 +49,8 @@ public class DocRestApiController {
     public NounsResult patchMorphList(
             @RequestBody NounsDic nounsDic,
             @PathVariable String sentence) throws Exception {
-        docService.modifyRfpDic(sentence, nounsDic.getNounsType() + "", nounsDic.getCombinNounsName());
         var nounsResult = new NounsResult();
-        var nounsDicObj = new NounsDic();
+        var nounsDicObj = docService.modifyRfpDic(sentence, nounsDic.getNounsType() + "", nounsDic.getCombinNounsName());;
         nounsResult.setNd(nounsDicObj);
         nounsResult.setExsist(1);
         return nounsResult;
@@ -83,9 +83,10 @@ public class DocRestApiController {
         return docService.postRfpDicNounsByNouns(nounsDic);
     }
 
-    @GetMapping("test2")
-    public String test2(){
-        return "API Test 2";
+    @GetMapping("initDic")
+    public String test2() throws IOException {
+        this.docService.initNounDic();
+        return "";
     }
 
 }

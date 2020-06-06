@@ -12,6 +12,8 @@ export class MorpWriteComponent implements OnInit, OnDestroy {
   nounsType;
   combinNounsName;
   rfpMphDicSevSub;
+  rfpMphDicSeach2AddSub;
+  rfpMphDicClick2AddSub;
 
   constructor(private rfpMorphDicServ: RfpMorphDicService) { }
 
@@ -21,9 +23,19 @@ export class MorpWriteComponent implements OnInit, OnDestroy {
       this.nounsFullName = p.nounsFullName;
       this.combinNounsName = p.combinNounsName;
     });
+    this.rfpMphDicSeach2AddSub = this.rfpMorphDicServ.rfpDicMorpSeach2AddEmit.subscribe(p => {
+      this.nounsFullName = p;
+    });
+    this.rfpMphDicClick2AddSub = this.rfpMorphDicServ.rfpDicMorpClick2AddEmit.subscribe(p => {
+      this.nounsFullName = p.nounsFullName;
+      this.nounsType = p.nounsType;
+      this.combinNounsName = p.combinNounsName;
+    });
   }
   ngOnDestroy(): void {
     this.rfpMphDicSevSub.unsubscribe();
+    this.rfpMphDicSeach2AddSub.unsubscribe();
+    this.rfpMphDicClick2AddSub.unsubscribe();
   }
 
 
@@ -32,7 +44,7 @@ export class MorpWriteComponent implements OnInit, OnDestroy {
       nounsType: this.nounsType,
       nounsFullName: this.nounsFullName,
       combinNounsName: this.combinNounsName,
-    }
+    };
     this.rfpMorphDicServ.postNouns(obj).subscribe(p => {
       alert(p);
     });

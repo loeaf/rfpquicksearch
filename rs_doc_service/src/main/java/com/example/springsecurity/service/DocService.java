@@ -8,8 +8,6 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +48,6 @@ public class DocService {
 
             String nounDicFullName = splitStr[0];
             NounStatus nounDicType = NounStatus.valueOf(splitStr[1]);
-            String nounMixFullName;
             NounsDic nounsDic = new NounsDic();
             nounsDic.setNounsFullName(nounDicFullName);
             nounsDic.setNounsType(nounDicType);
@@ -72,7 +69,7 @@ public class DocService {
 //    @Scope(value = "prototype")
     @Transactional
     public NounsDic findAllNounsDicByName(String nounId) {
-        var result = this.docManageRepository.findByNounsFullName(nounId);
+        var result = this.docManageRepository.findTop1ByNounsFullName(nounId);
         return result;
     }
 
@@ -90,7 +87,7 @@ public class DocService {
     @Transactional
     public NounsDic addNounsDic(NounsDic nounsDic) {
         String nounsFullName = nounsDic.getNounsFullName();
-        var result = this.docManageRepository.findByNounsFullName(nounsFullName);
+        var result = this.docManageRepository.findTop1ByNounsFullName(nounsFullName);
         if(result != null)
             return null;
 
@@ -102,7 +99,7 @@ public class DocService {
     @Transactional
     public int removeNounsDic(NounsDic nounsDic) {
         String nounsFullName = nounsDic.getNounsFullName();
-        var result = this.docManageRepository.findByNounsFullName(nounsFullName);
+        var result = this.docManageRepository.findTop1ByNounsFullName(nounsFullName);
         if(result == null)
             return 0;
         this.docManageRepository.delete(nounsDic);
@@ -146,7 +143,7 @@ public class DocService {
             var noutsLists = nounsString.split(",");
             for(var nouns: noutsLists) {
                 var nounsResultInfo = new NounsResult();
-                var nounsInfo = this.docManageRepository.findByNounsFullName(nouns);
+                var nounsInfo = this.docManageRepository.findTop1ByNounsFullName(nouns);
                 if(nounsInfo == null) {
                     var nounsObj = new NounsDic();
                     nounsObj.setNounsFullName(nouns);
@@ -170,11 +167,11 @@ public class DocService {
     }
 
     public NounsDic getRfpDicNounsByNounsWord(String nounsWord ) {
-        return this.docManageRepository.findByNounsFullName(nounsWord);
+        return this.docManageRepository.findTop1ByNounsFullName(nounsWord);
     }
 
     public NounsDic modifyRfpDic(String nounsFullName, String nounsType, String combinNounsName) {
-        var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
+        var isNouns = this.docManageRepository.findTop1ByNounsFullName(nounsFullName);
         if(isNouns == null) {
             var nounsDic = new NounsDic(nounsFullName, NounStatus.valueOf(nounsType), combinNounsName);
             return this.docManageRepository.save(nounsDic);
@@ -186,7 +183,7 @@ public class DocService {
     }
 
     public int deleteRfpDic(String nounsFullName) {
-        var isNouns = this.docManageRepository.findByNounsFullName(nounsFullName);
+        var isNouns = this.docManageRepository.findTop1ByNounsFullName(nounsFullName);
         if(isNouns == null) {
             return 0;
         } else {
@@ -196,8 +193,8 @@ public class DocService {
     }
 
     public NounsDic postRfpDicNounsByNouns(NounsDic nounsDic) {
-        var isNouns = this.docManageRepository.findByNounsFullName(nounsDic.getNounsFullName());
-        if(isNouns != null) {
+        var isNouns = this.docManageRepository.findTop1ByNounsFullName(nounsDic.getNounsFullName());
+        if(isNouns == null) {
             return this.docManageRepository.save(nounsDic);
         } else {
             isNouns.setCombinNounsName(nounsDic.getCombinNounsName());

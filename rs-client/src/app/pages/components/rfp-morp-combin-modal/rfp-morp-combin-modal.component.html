@@ -2,7 +2,7 @@
   <h2>○ 품사 확인</h2>
 </div>
 <div style="width: 500px;height: 500px;">
-  <mat-tab-group mat-stretch-tabs>
+  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)" mat-stretch-tabs>
     <mat-tab label="검색">
       <app-morp-search [morpCombinsArr]="morpCombins" style="height: 100%;overflow: hidden"></app-morp-search>
     </mat-tab>

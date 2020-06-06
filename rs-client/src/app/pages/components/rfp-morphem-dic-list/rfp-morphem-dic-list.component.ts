@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {SnackBarService, SnackBarType} from '../../../services/snack-bar.service';
 import {MatDialog} from '@angular/material/dialog';
-import {RfpMorpCombinModalComponent} from '../rfp-morp-combin-modal/rfp-morp-combin-modal.component';
+import {MorpCombinModalData, RfpMorpCombinModalComponent} from '../rfp-morp-combin-modal/rfp-morp-combin-modal.component';
 
 @Component({
   selector: 'app-rfp-morphem-dic-list',
@@ -78,14 +78,6 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
       this.dataSource.data = resultArr;
       this.dataSource.paginator = this.paginator;
     });
-    const morpCombinModal = this.dialog.open(RfpMorpCombinModalComponent, {
-      data: {
-        morpCombinData : '김ㄴㄴ+도현'
-      }
-    });
-    morpCombinModal.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
   private _filter(name: string): NounsTypesStr[] {
     const filterValue = name.toLowerCase();
@@ -136,6 +128,8 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
     if (selctModi.modifiy === true) { // 수정중
       this.rfpDicManageService.putRfpMorphDic(selctModi).subscribe(obj => {
         selctModi.modifiy = false;
+        selctModi.nounsType = obj.nd.nounsType;
+        selctModi.exsist = 1;
         console.log(obj);
       });
     } else { // 수정중아님
@@ -173,15 +167,32 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
         if (combineNounsArr.length === p.length) {
          this.snackBarService.alertSanckBar(SnackBarType.RFPDicFinish);
         } else {
+          const param: MorpCombinModalData = {
+            morpCombinData: combinNouns.combinNounsName
+          };
           this.snackBarService.alertSanckBar(SnackBarType.RFPDicFail)
             .onAction().subscribe(obj => {
-            const morpCombinModal = this.dialog.open(RfpMorpCombinModalComponent);
+            const morpCombinModal = this.dialog.open(RfpMorpCombinModalComponent, {
+              data: param
+            });
             morpCombinModal.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
             });
           });
         }
     });
+  }
+
+  selectCancle(id: any) {
+    const selctModi = this.dataSource.data.find(obj => obj.id === id);
+    if (selctModi.modifiy === true) { // 수정중
+      selctModi.modifiy = false;
+    } else { // 수정중아님
+      selctModi.modifiy = true;
+    }
+    const p = new MatTableDataSource<any>(this.dataSource.data)
+    this.dataSource = p;
+    this.dataSource.paginator = this.paginator;
   }
 }
 export interface NounsDicModel {

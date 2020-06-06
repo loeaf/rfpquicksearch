@@ -13,6 +13,8 @@ import {DefaultRFPMorphDicVM} from '../pages/components/morp-search-list/morp-se
 export class RfpMorphDicService {
   constructor(private httpClient: HttpClient, private progressServ: ProgressService) { }
   @Output() rfpDicListCompoRenderEmit: EventEmitter<RFPMorphemDicModel> = new EventEmitter();
+  @Output() rfpDicMorpSeach2AddEmit: EventEmitter<RFPMorphemDicModel> = new EventEmitter();
+  @Output() rfpDicMorpClick2AddEmit: EventEmitter<NounsDicModel> = new EventEmitter();
   private MorphChipItem2ListSJ = new Subject<any>();
   private MorpSchList2WrtieSJ = new Subject<any>();
   createUser(user) {
@@ -33,10 +35,10 @@ export class RfpMorphDicService {
     };
     const nounsParam = JSON.stringify({
       nounsType: 1,
-      combinNounsName: nouns.combinNounsName
+      combinNounsName: `C;$(${nouns.combinNounsName})`
     });
     const headers = new HttpHeaders(headerJson);
-    return this.httpClient.put(`http://localhost:8080/api/doc/morph/${nouns.nounsFullName}`, nounsParam, {headers});
+    return this.httpClient.put<any>(`http://localhost:8080/api/doc/morph/${nouns.nounsFullName}`, nounsParam, {headers});
   }
   delRfpMorphDic(nouns: NounsDicModel) {
     return this.httpClient.delete(`http://localhost:8080/api/doc/morph/${nouns.nounsFullName}`);
@@ -46,6 +48,7 @@ export class RfpMorphDicService {
       .get<NounsDicModel>(`http://localhost:8080/api/doc/nouns/${nounsWord}`);
   }
   postNouns(nouns: NounsDicModel) {
+    nouns.combinNounsName = `C;$(${nouns.combinNounsName})`;
     return this.httpClient
       .post<NounsDicModel>(`http://localhost:8080/api/doc/nouns`, nouns);
   }

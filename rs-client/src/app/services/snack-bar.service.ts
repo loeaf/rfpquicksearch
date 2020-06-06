@@ -14,7 +14,7 @@ export class SnackBarService {
     } else if (snackType === SnackBarType.RFPDicFail) {
       return this.openSnackBarAction('조합에 문제가있습니다\n 형태소를 추가해주세요!', `확인하기`, 5000);
     } else if (snackType === SnackBarType.NounsNotFound) {
-      return this.openSnackBarAction('품사가 DB에 없습니다\n 품사를 추가해주세요!', `추가하기`, 8000);
+      return this.openSnackBarAction('품사가 DB에 없습니다\n 품사를 추가해주세요!', `이동하기`, 8000);
     }
   }
   private openSnackBar(command, actionStr: string, duration) {

@@ -7,6 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface DocManageRepository extends JpaRepository<NounsDic, String> {
-    NounsDic findByNounsFullName(String nounsFullName);
+    NounsDic findTop1ByNounsFullName(String nounsFullName);
     List<NounsDic> findByNounsFullNameIn(ArrayList<String> nounsFullName);
 }

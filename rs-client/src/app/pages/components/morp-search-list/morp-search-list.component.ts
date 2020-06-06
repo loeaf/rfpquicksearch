@@ -2,6 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RfpMorphDicService} from '../../../services/rfp-morph-dic.service';
 import {Subscription} from 'rxjs';
 import {SnackBarService, SnackBarType} from '../../../services/snack-bar.service';
+import {RFPMorphemDicModel} from '../rfp-morphem-dic-list/rfp-morphem-dic-list.component';
 
 @Component({
   selector: 'app-morp-search-list',
@@ -26,7 +27,12 @@ export class MorpSearchListComponent implements OnInit, OnDestroy {
         if (p === null) {
           const resultArr = [];
           this.dataSource = resultArr;
-          this.snackBarServ.alertSanckBar(SnackBarType.NounsNotFound);
+          this.rfpMorphDicServ.rfpDicMorpClick2AddEmit.emit(item);
+          this.snackBarServ.alertSanckBar(SnackBarType.NounsNotFound).onAction().subscribe(snackResult => {
+            this.rfpMorphDicServ.rfpDicMorpSeach2AddEmit.emit(item);
+          });
+          this.emitClikc2Input(item, 'NNG', '');
+
         } else {
           const resultArr = [];
           const result: DefaultRFPMorphDicVM = {
@@ -35,12 +41,20 @@ export class MorpSearchListComponent implements OnInit, OnDestroy {
             combinNounsName: p.combinNounsName,
             nounsType: p.nounsType
           };
-          this.rfpMorphDicServ.sendMorpSchList2WrtieSJ(result);
+          this.emitClikc2Input(p.nounsFullName, p.nounsType, p.combinNounsName);
 
           resultArr.push(result);
           this.dataSource = resultArr;
         }
       });
+    });
+  }
+
+  private emitClikc2Input(nounsFullName, nounsType, combinNounsName) {
+    this.rfpMorphDicServ.rfpDicMorpClick2AddEmit.emit({
+      nounsFullName,
+      nounsType,
+      combinNounsName,
     });
   }
 
