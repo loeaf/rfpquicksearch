@@ -1,6 +1,5 @@
 <div>
   <table mat-table [dataSource]="dataSource" class="rf-list">
-    <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef style="width: 100px;">
         <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -18,7 +17,6 @@
       </td>
     </ng-container>
 
-    <!-- Position Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> rfp 입력 번호 </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -29,35 +27,43 @@
       <td mat-cell *matCellDef="let element"> {{element.prjId}} </td>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> 요구사항 분류 </th>
       <td mat-cell *matCellDef="let element"> {{element.type}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="fullNum">
       <th mat-header-cell *matHeaderCellDef> 요구사항 고유번호 </th>
       <td mat-cell *matCellDef="let element"> {{element.fullNum}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="reqDefi">
       <th mat-header-cell *matHeaderCellDef> 요구사항 명칭 </th>
       <td mat-cell *matCellDef="let element">
         {{element.reqDefi}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="reqName">
       <th mat-header-cell *matHeaderCellDef> 정의 </th>
       <td mat-cell *matCellDef="let element"> {{element.reqName}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="detInfo">
       <th mat-header-cell *matHeaderCellDef> 세부 내용 </th>
       <td mat-cell *matCellDef="let element"> {{ (element.detInfo.length>50)? (element.detInfo | slice:0:50)+'..':(element.detInfo) }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="bty">
+      <th mat-header-cell *matHeaderCellDef> 세부 내용 </th>
+      <td mat-cell *matCellDef="let element"> {{ (element.detInfo.length>50)? (element.detInfo | slice:0:50)+'..':(element.detInfo) }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="btn">
+      <th mat-header-cell style="min-width: 35px" *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" (click)="selectModify(element)">수정</button>
+        <button mat-raised-button style="margin-left: 10px;" (click)="selectDelete(element.id)">삭제</button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

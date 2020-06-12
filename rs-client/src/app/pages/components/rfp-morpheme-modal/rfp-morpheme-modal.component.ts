@@ -15,12 +15,20 @@ export class RfpMorphemeModalComponent implements OnInit {
 
   ngOnInit(): void {
     const sentensData = this.data.sentens;
-    const porcData = sentensData.split('\n')
+    const rfpManage = new RfpMorphemeManager();
+    const procData = rfpManage.procDetString2Morpheme(sentensData);
+    this.procSentens = procData.join(' ');
+    procData.forEach(obj => this.sentens.push(obj));
+  }
+}
+
+export class RfpMorphemeManager {
+  procDetString2Morpheme(sentence) {
+    const porcData = sentence.split('\n')
       .map(obj => obj.split(' ')
       .filter(mapData => mapData.length > 1)
       .join(' '))
       .filter(result => result.length > 0);
-    this.procSentens = porcData.join(' ');
-    porcData.forEach(obj => this.sentens.push(obj));
+    return porcData;
   }
 }

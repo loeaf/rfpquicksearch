@@ -6,9 +6,15 @@ import com.example.springsecurity.model.NounsDicParam;
 import com.example.springsecurity.model.NounsResult;
 import com.example.springsecurity.service.DocService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -89,4 +95,27 @@ public class DocRestApiController {
         return "";
     }
 
+    @GetMapping("makeDic")
+    public String makeDic() throws ParseException {
+        LocalDate localDate = LocalDate.of(2017, 12, 12);
+        var dicObjList = this.docService.getDicNounsByDate("2020/06/05", "2020/06/08");
+
+        File file = new File("C:\\Users\\Daumsoft\\Anaconda3\\Lib\\site-packages\\konlpy\\java\\kkma-2.0\\dic\\nouns_" + localDate + ".dic");
+
+        try {
+            FileWriter fw = new FileWriter(file);
+            dicObjList.forEach(p -> {
+                try {
+                    String lineString = String.format("%s/%s/%s", p.getNounsFullName(), p.getNounsType(), p.getCombinNounsName());
+                    fw.write(lineString + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

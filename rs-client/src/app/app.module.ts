@@ -41,6 +41,7 @@ import { MorpSearchListComponent } from './pages/components/morp-search-list/mor
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatChipsModule} from '@angular/material/chips';
 import { MorpWriteComponent } from './pages/components/morp-write/morp-write.component';
+import { RfpInfoModalComponent } from './pages/components/rfp-info-modal/rfp-info-modal.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { MorpWriteComponent } from './pages/components/morp-write/morp-write.com
     MorpSearchComponent,
     MorpCombinSearchComponent,
     MorpSearchListComponent,
-    MorpWriteComponent
+    MorpWriteComponent,
+    RfpInfoModalComponent
   ],
   imports: [
     BrowserModule,

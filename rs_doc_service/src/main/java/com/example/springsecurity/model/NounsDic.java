@@ -2,12 +2,12 @@ package com.example.springsecurity.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(indexes = {
+        @Index(name = "IDX_CREATE_DT", unique=false, columnList = "createdAt")
+})
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor

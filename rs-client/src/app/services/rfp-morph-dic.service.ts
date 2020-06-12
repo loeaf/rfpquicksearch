@@ -21,6 +21,9 @@ export class RfpMorphDicService {
     return this.httpClient.post(  `http://localhost:3000/users`, user);
   }
   getRfpMorphDic(sentence) {
+    // url 호출할때 /가 경로로 인식되어 처리되는 문제를 기존에 방지
+    sentence = sentence.replace(/[/|,|\[|\]|.|(|)|｢|｣]/g, ',');
+    console.log(sentence);
     return this.httpClient
       .get<RFPMorphemDicModel>(`http://localhost:8080/api/doc/morph/${sentence}`)
       .pipe(catchError(this.erroHandler));

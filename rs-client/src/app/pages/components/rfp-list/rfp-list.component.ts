@@ -5,6 +5,8 @@ import {RfpManagerService} from '../../../services/rfp-manager.service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {RfpMorphDicService} from '../../../services/rfp-morph-dic.service';
 import {ProgressService} from '../../../services/progress.service';
+import {MatDialog} from '@angular/material/dialog';
+import {RfpInfoModalComponent} from '../rfp-info-modal/rfp-info-modal.component';
 
 @Component({
   selector: 'app-rfp-list',
@@ -14,7 +16,7 @@ import {ProgressService} from '../../../services/progress.service';
 export class RfpListComponent implements OnInit, OnDestroy {
 
   constructor(private rfpManagerService: RfpManagerService, private rfpDicManageService: RfpMorphDicService,
-              private progressServ: ProgressService) { }
+              private progressServ: ProgressService, public dialog: MatDialog) { }
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<RFPListModel>();
   private rfpListTypeObj;
@@ -35,11 +37,11 @@ export class RfpListComponent implements OnInit, OnDestroy {
     if (this.rfpListTypeObj === 'useSubPrjNum') {
       this.getRefAllList();
       this.subScribRfpListByPrjNum();
-      this.displayedColumns = ['id', 'prjId', 'type', 'fullNum', 'reqName', 'reqDefi', 'detInfo'];
+      this.displayedColumns = ['id', 'prjId', 'type', 'fullNum', 'reqName', 'reqDefi', 'detInfo', 'btn'];
     } else if (this.rfpListTypeObj === 'useSubFullTextSch') {
       this.getRefAllList();
       this.subScribRfpListByFullText();
-      this.displayedColumns = ['id', 'prjId', 'type', 'fullNum', 'reqName', 'reqDefi', 'detInfo'];
+      this.displayedColumns = ['id', 'prjId', 'type', 'fullNum', 'reqName', 'reqDefi', 'detInfo', 'btn'];
     } else if (this.rfpListTypeObj === 'useSubDic') {
       this.subScribRfpListByPrjNum();
       this.displayedColumns = ['select', 'id', 'prjId', 'detInfo'];
@@ -132,6 +134,22 @@ export class RfpListComponent implements OnInit, OnDestroy {
       this.progressServ.ProgressEmmit.emit(false);
       alert(err);
     });
+  }
+
+  selectModify(data: RFPListModel) {
+    const dialogRef = this.dialog.open(RfpInfoModalComponent, {
+      width: '800px',
+      data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.dataSource.data = result;
+    });
+  }
+
+  selectDelete(id: any) {
+
   }
 }
 

@@ -20,7 +20,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -201,5 +206,33 @@ public class DocService {
             isNouns.setNounsType(nounsDic.getNounsType());
             return this.docManageRepository.save(isNouns);
         }
+    }
+
+    public List<NounsDic> getDicNouns() {
+        return this.docManageRepository.findAll();
+    }
+
+    public List<NounsDic> getDicNounsByDate(String pointDate) throws ParseException {
+        var dateString= pointDate.split("/");
+        var year = Integer.parseInt(dateString[0]);
+        var month = Integer.parseInt(dateString[1]);
+        var day = Integer.parseInt(dateString[2]);
+        LocalDateTime startDt = LocalDateTime.of(year, month, day, 0,0,0);
+        LocalDateTime endDt = LocalDateTime.of(year, month, day, 23,59,59);
+        return this.docManageRepository.findByCreatedAtBetween(startDt, endDt);
+    }
+
+    public List<NounsDic> getDicNounsByDate(String startDate, String endDate) throws ParseException {
+        var startDateString = startDate.split("/");
+        var startYear = Integer.parseInt(startDateString[0]);
+        var startMonth = Integer.parseInt(startDateString[1]);
+        var startDay = Integer.parseInt(startDateString[2]);
+        var endDateString = endDate.split("/");
+        var endYear = Integer.parseInt(endDateString[0]);
+        var endMonth = Integer.parseInt(endDateString[1]);
+        var endDay = Integer.parseInt(endDateString[2]);
+        LocalDateTime startDt = LocalDateTime.of(startYear, startMonth, startDay, 0,0,0);
+        LocalDateTime endDt = LocalDateTime.of(endYear, endMonth, endDay, 23,59,59);
+        return this.docManageRepository.findByCreatedAtBetween(startDt, endDt);
     }
 }
