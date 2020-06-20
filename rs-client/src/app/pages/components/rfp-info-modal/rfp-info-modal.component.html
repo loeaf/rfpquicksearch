@@ -3,48 +3,48 @@
   <div>
     <mat-form-field class="fullwidth">
       <mat-label>RFP 입력 번호</mat-label>
-      <input matInput [(ngModel)]="data.id" disabled>
+      <input matInput [(ngModel)]="modalData.id" disabled>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="fullwidth">
       <mat-label>프로젝트 입력 번호</mat-label>
-      <input matInput [(ngModel)]="data.prjId" disabled>
+      <input matInput [(ngModel)]="modalData.prjId" disabled>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="fullwidth">
       <mat-label>요구사항 분류</mat-label>
-      <input matInput [(ngModel)]="data.type" disabled>
+      <input matInput [(ngModel)]="modalData.type" disabled>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="fullwidth">
       <mat-label>요구사항 고유번호</mat-label>
-      <input matInput [(ngModel)]="data.fullNum" disabled>
+      <input matInput [(ngModel)]="modalData.fullNum" disabled>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="fullwidth">
       <mat-label>요구사항 명칭</mat-label>
-      <textarea matInput [(ngModel)]="data.reqName"></textarea>
+      <textarea matInput [(ngModel)]="modalData.reqName"></textarea>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="fullwidth">
       <mat-label>정의</mat-label>
-      <textarea matInput [(ngModel)]="data.reqDefi"></textarea>
+      <textarea matInput [(ngModel)]="modalData.reqDefi"></textarea>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="fullwidth">
       <mat-label style="float: left">세부 내용</mat-label>
-      <textarea matInput [(ngModel)]="data.detInfo"  style="height: 80px; float: left"></textarea>
+      <textarea matInput [(ngModel)]="modalData.detInfo"  style="height: 80px; float: left"></textarea>
       <button mat-button (click)="detParse()">세부내용 파싱</button>
     </mat-form-field>
   </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">취소</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>수정</button>
+  <button mat-button (click)="modifi(modalData)" cdkFocusInitial>수정</button>
 </div>

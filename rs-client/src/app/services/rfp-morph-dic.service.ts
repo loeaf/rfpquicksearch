@@ -38,7 +38,7 @@ export class RfpMorphDicService {
     };
     const nounsParam = JSON.stringify({
       nounsType: 1,
-      combinNounsName: `C;$(${nouns.combinNounsName})`
+      combinNounsName: this.combinNounsChk(nouns.combinNounsName)
     });
     const headers = new HttpHeaders(headerJson);
     return this.httpClient.put<any>(`http://localhost:8080/api/doc/morph/${nouns.nounsFullName}`, nounsParam, {headers});
@@ -51,9 +51,18 @@ export class RfpMorphDicService {
       .get<NounsDicModel>(`http://localhost:8080/api/doc/nouns/${nounsWord}`);
   }
   postNouns(nouns: NounsDicModel) {
-    nouns.combinNounsName = `C;$(${nouns.combinNounsName})`;
+    nouns.combinNounsName = this.combinNounsChk(nouns.combinNounsName);
     return this.httpClient
       .post<NounsDicModel>(`http://localhost:8080/api/doc/nouns`, nouns);
+  }
+  private combinNounsChk(combinNounsName) {
+    if (!combinNounsName) {
+      return ``;
+    } else if (combinNounsName === ``) {
+      return ``;
+    } else {
+     return `C;$(${combinNounsName})`;
+    }
   }
   sendMorphChipItem2List(chipItem: string) {
    this.MorphChipItem2ListSJ.next(chipItem);

@@ -13,19 +13,25 @@ export class RfpInfoModalComponent implements OnInit {
   modalData;
   constructor(public dialogRef: MatDialogRef<RfpInfoModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: RFPListModel) {
-    this.modalData = data;
+    debugger;
+    this.modalData = {...data};
   }
 
   ngOnInit(): void {
   }
 
-  onNoClick() {
+  onNoClick(): void {
+    debugger;
     this.dialogRef.close();
   }
 
   detParse() {
     const sentence = this.modalData.detInfo;
     const morphResult = new RfpMorphemeManager().procDetString2Morpheme(sentence);
-    this.modalData.detInfo = morphResult;
+    this.modalData.detInfo = ``.concat(morphResult);
+  }
+
+  modifi(modalData: RFPListModel): void {
+    this.dialogRef.close(modalData);
   }
 }

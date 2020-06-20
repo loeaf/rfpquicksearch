@@ -18,44 +18,38 @@
     </ng-container>
 
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> rfp 입력 번호 </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 100px"> rfp 번호 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="prjId">
-      <th mat-header-cell *matHeaderCellDef> 프로젝트 입력 번호 </th>
-      <td mat-cell *matCellDef="let element"> {{element.prjId}} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 100px"> 프로젝트 번호 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{element.prjId}} </td>
     </ng-container>
 
     <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> 요구사항 분류 </th>
-      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 150px"> 요구사항 분류 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{element.type}} </td>
     </ng-container>
 
     <ng-container matColumnDef="fullNum">
-      <th mat-header-cell *matHeaderCellDef> 요구사항 고유번호 </th>
-      <td mat-cell *matCellDef="let element"> {{element.fullNum}} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 100px"> 요구사항 번호 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{element.fullNum}} </td>
     </ng-container>
 
     <ng-container matColumnDef="reqDefi">
-      <th mat-header-cell *matHeaderCellDef> 요구사항 명칭 </th>
-      <td mat-cell *matCellDef="let element">
-        {{element.reqDefi}} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 300px"> 요구사항 정의 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{ (element.reqDefi.length>15)? (element.reqDefi | slice:0:15)+'..':(element.reqDefi) }} </td>
     </ng-container>
 
     <ng-container matColumnDef="reqName">
-      <th mat-header-cell *matHeaderCellDef> 정의 </th>
-      <td mat-cell *matCellDef="let element"> {{element.reqName}} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 280px"> 요구사항 명 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{element.reqName}} </td>
     </ng-container>
 
     <ng-container matColumnDef="detInfo">
-      <th mat-header-cell *matHeaderCellDef> 세부 내용 </th>
-      <td mat-cell *matCellDef="let element"> {{ (element.detInfo.length>50)? (element.detInfo | slice:0:50)+'..':(element.detInfo) }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="bty">
-      <th mat-header-cell *matHeaderCellDef> 세부 내용 </th>
-      <td mat-cell *matCellDef="let element"> {{ (element.detInfo.length>50)? (element.detInfo | slice:0:50)+'..':(element.detInfo) }} </td>
+      <th mat-header-cell *matHeaderCellDef class="rf-list-center" style="width: 650px;"> 세부 내용 </th>
+      <td mat-cell class="rf-list-center" *matCellDef="let element"> {{ (element.detInfo.length>50)? (element.detInfo | slice:0:50)+'..':(element.detInfo) }} </td>
     </ng-container>
 
     <ng-container matColumnDef="btn">

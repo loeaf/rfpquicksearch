@@ -98,7 +98,7 @@ public class DocRestApiController {
     @GetMapping("makeDic")
     public String makeDic() throws ParseException {
         LocalDate localDate = LocalDate.of(2017, 12, 12);
-        var dicObjList = this.docService.getDicNounsByDate("2020/06/05", "2020/06/08");
+        var dicObjList = this.docService.getDicNounsByDate("2020/06/05", "2020/06/20");
 
         File file = new File("C:\\Users\\Daumsoft\\Anaconda3\\Lib\\site-packages\\konlpy\\java\\kkma-2.0\\dic\\nouns_" + localDate + ".dic");
 

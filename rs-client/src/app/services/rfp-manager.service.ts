@@ -16,6 +16,9 @@ export class RfpManagerService {
   createRFPInfo(rfpInfo) {
     return this.httpClient.post<RFPListModel>('http://localhost:3000/rfp', rfpInfo);
   }
+  patchRFPInfo(rfpInfo) {
+    return this.httpClient.patch<RFPListModel>(`http://localhost:3000/rfp/${rfpInfo.id}`, rfpInfo);
+  }
   getAllRFPList() {
     return this.httpClient.get('http://localhost:3000/rfp');
   }
@@ -24,9 +27,6 @@ export class RfpManagerService {
   }
   getAllRFPListByFullText(fullText) {
     return this.httpClient.get(`http://localhost:3000/rfp?q=${fullText}`);
-  }
-  updateUser(user) {
-    return this.httpClient.put("http://localhost:3000/users/"+user.id,user);
   }
   deleteUser(user) {
     return this.httpClient.delete("http://localhost:3000/users/"+user.id);

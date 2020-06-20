@@ -51,7 +51,9 @@ export class RfpInfoInputComponent implements OnInit, OnDestroy {
       data: dialogDat
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if (!result) {
+        return;
+      }
       this.rfpInfoObj.detInfo = result;
     });
   }

@@ -108,7 +108,9 @@ export class RfpListComponent implements OnInit, OnDestroy {
 
   selectItem(nowRow: any) {
     this.selection.toggle(nowRow);
-    this.progressServ.ProgressEmmit.emit(true);
+    if (this.rfpListTypeObj === 'useSubDic') {
+      this.progressServ.ProgressEmmit.emit(true);
+    }
     if (this.preSelection !== undefined) { // 다른것 클릭
       if (nowRow.id === this.preSelection.id) { // 같은것 클릭
         this.preSelection = undefined;
@@ -143,8 +145,20 @@ export class RfpListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
       console.log('The dialog was closed');
-      this.dataSource.data = result;
+      for (let i = 0; i < this.dataSource.data.length; i++) {
+        if (this.dataSource.data[i].id === result.id) {
+          this.dataSource.data[i] = result;
+        }
+      }
+      debugger;
+      this.rfpManagerService.patchRFPInfo(result).subscribe(p => {
+        debugger;
+        this.setDataSource(this.dataSource.data);
+      });
     });
   }
 

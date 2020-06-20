@@ -37,7 +37,12 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
     this.rfpDicListCompoEmit.unsubscribe();
   }
   ngOnInit(): void {
+    debugger;
     this.rfpDicListCompoEmit = this.rfpDicManageService.rfpDicListCompoRenderEmit.subscribe(res => {
+      debugger;
+      if (!res){
+        return;
+      }
       this.progressServ.ProgressEmmit.emit(false);
       if (res === null) {
         this.dataSource.data = [];
@@ -126,7 +131,17 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
   selectModify(id: any) {
     const selctModi = this.dataSource.data.find(obj => obj.id === id);
     if (selctModi.modifiy === true) { // 수정중
+      debugger;
+      if (!selctModi.combinNounsName === undefined) {
+        if (selctModi.combinNounsName.split(`+`).length === 1) {
+          alert('정규식이 올바르지 않습니다');
+          return;
+        }
+      }
       this.rfpDicManageService.putRfpMorphDic(selctModi).subscribe(obj => {
+        if (!obj){
+          return;
+        }
         selctModi.modifiy = false;
         selctModi.nounsType = obj.nd.nounsType;
         selctModi.exsist = 1;
@@ -143,6 +158,9 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
   selectDelete(id) {
     const selctModi = this.dataSource.data.find(obj => obj.id === id);
     this.rfpDicManageService.delRfpMorphDic(selctModi).subscribe(obj => {
+      if (!obj) {
+        return;
+      }
       if ( obj === 1 ) {
         const index = this.findDataSourceByIndex(id);
         this.dataSource.data.splice(index, 1);
@@ -164,6 +182,9 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
     const combineNounsArr = combinNouns.combinNounsName.split(`+`);
     this.rfpDicManageService.getRfpMorphDicByCombinNouns(combinNouns.combinNounsName)
       .subscribe(p => {
+        if (!p){
+          return;
+        }
         if (combineNounsArr.length === p.length) {
          this.snackBarService.alertSanckBar(SnackBarType.RFPDicFinish);
         } else {
@@ -174,9 +195,6 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
             .onAction().subscribe(obj => {
             const morpCombinModal = this.dialog.open(RfpMorpCombinModalComponent, {
               data: param
-            });
-            morpCombinModal.afterClosed().subscribe(result => {
-              console.log(`Dialog result: ${result}`);
             });
           });
         }

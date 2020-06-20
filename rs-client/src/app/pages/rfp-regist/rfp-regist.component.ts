@@ -30,7 +30,7 @@ export class RfpRegistComponent implements OnInit {
       alert('어떤 프로젝트를 수행하는지 선택해주세요!');
       return;
     }
-    if (obj.type === '' || obj.fullNum === '' || obj.reqName === '' || obj.reqDefi === '' || obj.detInfo === '') {
+    if (obj.type === '' || obj.fullNum === '' || obj.reqName === '' || obj.detInfo === '') {
       alert('상세 정보 항목을 모두 입력해주세요!');
       return;
     }
