@@ -175,4 +175,5 @@ export interface RFPListModel {
   reqName: string;
   reqDefi: string;
   detInfo: string;
+  detOriginInfo: string;
 }

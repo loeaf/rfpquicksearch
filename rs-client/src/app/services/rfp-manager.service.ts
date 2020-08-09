@@ -14,6 +14,7 @@ export class RfpManagerService {
   @Output() rfpListCompoRenderEmitByFullText: EventEmitter<any> = new EventEmitter();
 
   createRFPInfo(rfpInfo) {
+    console.log(rfpInfo);
     return this.httpClient.post<RFPListModel>('http://localhost:3000/rfp', rfpInfo);
   }
   patchRFPInfo(rfpInfo) {

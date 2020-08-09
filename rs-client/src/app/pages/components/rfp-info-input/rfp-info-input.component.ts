@@ -19,7 +19,8 @@ export class RfpInfoInputComponent implements OnInit, OnDestroy {
     fullNum: '',
     reqName: '',
     reqDefi: '',
-    detInfo: ''
+    detInfo: '',
+    detOriginInfo: ''
   };
   textAreaStr = '○ 국정원, 국토부, 공사 보안규정 및 지침을 준수하여 개발이 수행되어야 함 ○ 계약상대자가 원격지 개발을 희망할 경우 보안사고 등 위험요인을 식별하여 이에 대한 대응방안을 제안하고, 제안요청서에 명시한 보안요구사항 등을 준수하여 원격지 개발에 따른 구체적인 원격지 보안관리대책(참여 인원, 원격지 개발장소 및 장비, 원격지 개발 장소의 노트북·USB 등 휴대용 저장매체, 네트워크, 자료 등)을 제시하여야 함';
   ngModuleOption = {
@@ -38,12 +39,14 @@ export class RfpInfoInputComponent implements OnInit, OnDestroy {
         fullNum: '',
         reqName: '',
         reqDefi: '',
-        detInfo: ''
+        detInfo: '',
+        detOriginInfo: ''
       };
     });
   }
 
   openDialog() {
+    this.rfpInfoObj.detOriginInfo = this.rfpInfoObj.detInfo
     const dialogDat: DialogData = {
       sentens: this.rfpInfoObj.detInfo
     }
@@ -55,6 +58,8 @@ export class RfpInfoInputComponent implements OnInit, OnDestroy {
         return;
       }
       this.rfpInfoObj.detInfo = result;
+      console.log(this.rfpInfoObj.detInfo);
+      console.log(this.rfpInfoObj.detOriginInfo);
     });
   }
 }
@@ -65,4 +70,5 @@ interface RFPInfoModel {
   reqName: string;
   reqDefi: string;
   detInfo: string;
+  detOriginInfo: string;
 }
