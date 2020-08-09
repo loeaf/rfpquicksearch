@@ -131,7 +131,6 @@ export class RfpMorphemDicListComponent implements OnInit,  OnDestroy{
   selectModify(id: any) {
     const selctModi = this.dataSource.data.find(obj => obj.id === id);
     if (selctModi.modifiy === true) { // 수정중
-      debugger;
       if (!selctModi.combinNounsName === undefined) {
         if (selctModi.combinNounsName.split(`+`).length === 1) {
           alert('정규식이 올바르지 않습니다');

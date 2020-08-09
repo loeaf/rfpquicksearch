@@ -39,6 +39,7 @@ export class RfpRegistComponent implements OnInit {
       prjId: select.id,
       reqDefi: obj.reqDefi,
       detInfo: obj.detInfo,
+      detOriginInfo: obj.detOriginInfo,
       fullNum: obj.fullNum,
       reqName: obj.reqName,
       type: obj.type,
